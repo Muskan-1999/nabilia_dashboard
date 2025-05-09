@@ -8,6 +8,7 @@
         </p>
     </header>
 
+
     <form id="send-verification" method="post" action="{{ route('verification.send') }}">
         @csrf
     </form>
@@ -21,7 +22,7 @@
             <input id="firstname" name="firstname" type="text" class="form-control @error('firstname') is-invalid @enderror"
                 value="{{ old('firstname', $user->firstname) }}" required autofocus autocomplete="firstname">
             @error('firstname')
-                <div class="invalid-feedback">{{ $message }}</div>
+            <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
 
@@ -30,24 +31,24 @@
             <input id="email" name="email" type="email" class="form-control @error('email') is-invalid @enderror"
                 value="{{ old('email', $user->email) }}" required autocomplete="username">
             @error('email')
-                <div class="invalid-feedback">{{ $message }}</div>
+            <div class="invalid-feedback">{{ $message }}</div>
             @enderror
 
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
-                <div class="mt-2">
-                    <p class="text-muted small">
-                        {{ __('Your email address is unverified.') }}
-                        <button form="send-verification" class="btn btn-link p-0 align-baseline">
-                            {{ __('Click here to re-send the verification email.') }}
-                        </button>
-                    </p>
+            <div class="mt-2">
+                <p class="text-muted small">
+                    {{ __('Your email address is unverified.') }}
+                    <button form="send-verification" class="btn btn-link p-0 align-baseline">
+                        {{ __('Click here to re-send the verification email.') }}
+                    </button>
+                </p>
 
-                    @if (session('status') === 'verification-link-sent')
-                        <div class="alert alert-success mt-2 p-2 small">
-                            {{ __('A new verification link has been sent to your email address.') }}
-                        </div>
-                    @endif
+                @if (session('status') === 'verification-link-sent')
+                <div class="alert alert-success mt-2 p-2 small">
+                    {{ __('A new verification link has been sent to your email address.') }}
                 </div>
+                @endif
+            </div>
             @endif
         </div>
 
@@ -55,13 +56,12 @@
             <button type="submit" class="btn btn-primary">{{ __('Save') }}</button>
 
             @if (session('status') === 'profile-updated')
-                <p
-                    x-data="{ show: true }"
-                    x-show="show"
-                    x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
-                    class="text-muted small mb-0"
-                >{{ __('Saved.') }}</p>
+            <p
+                x-data="{ show: true }"
+                x-show="show"
+                x-transition
+                x-init="setTimeout(() => show = false, 2000)"
+                class="text-muted small mb-0">{{ __('Saved.') }}</p>
             @endif
         </div>
     </form>

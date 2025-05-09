@@ -2,7 +2,7 @@
     <div class="mb-4">
         <div class="card">
             <div class="card-body">
-                {{ __("You're logged in!") }}
+            {{ __('messages.logged_in') }}
             </div>
         </div>
     </div>

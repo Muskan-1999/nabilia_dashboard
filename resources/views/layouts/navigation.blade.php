@@ -1,49 +1,75 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm">
-    <div class="container">
-        <a class="navbar-brand" href="{{ route('dashboard') }}">
-            <img src="{{ asset('images/nobilia-logo.png') }}" alt="Logo" height="30">
-        </a>
+@php
+        $languages = ['en' => 'English', 'de' => 'German'];
+        $flags = ['en' => 'gb.png', 'de' => 'de.png'];
+        $currentLocale = Session::get('locale', 'en');
+        @endphp
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+<nav class="navbar navbar-light bg-white border-bottom shadow-sm px-3">
+    <div class="container-fluid d-flex align-items-center justify-content-between">
 
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
-                        {{ __('Dashboard') }}
+        <!-- Left-Aligned Logo -->
+        <div class="py-3">
+            <img src="{{ asset('images/nobilia-logo.png') }}" alt="{{ __('logo_alt') }}" class="img-fluid" style="max-height: 40px;">
+        </div>
+
+        <!-- Centered Placeholder -->
+        <div class="flex-grow-1"></div>
+
+        <!-- Right-Aligned Language Switcher -->
+
+       
+        <div class="dropdown">
+            <button class="btn btn-outline-primary dropdown-toggle d-flex align-items-center" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="{{ asset('images/' . $flags[$currentLocale]) }}" alt="{{ $languages[$currentLocale] }}" width="20" class="me-2">
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+                <li>
+                    <a class="dropdown-item d-flex align-items-center" href="{{ route('change.lang', ['lang' => 'en']) }}">
+                        <img src="{{ asset('images/gb.png') }}" alt="English" width="20" class="me-2"> English
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('users.index') ? 'active' : '' }}" href="{{route('users.index')}}">
-                        {{ __('User Management') }}
+                <li>
+                    <a class="dropdown-item d-flex align-items-center" href="{{ route('change.lang', ['lang' => 'de']) }}">
+                        <img src="{{ asset('images/de.png') }}" alt="German" width="20" class="me-2"> German
                     </a>
-                </li>
-            </ul>
-
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        {{ Auth::user()->firstname }}
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li>
-                            <a class="dropdown-item" href="{{ route('profile.edit') }}">
-                                {{ __('Profile') }}
-                            </a>
-                        </li>
-                        <li>
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <button type="submit" class="dropdown-item w-100 text-start border-0 bg-transparent">
-                                    {{ __('Log Out') }}
-                                </button>
-                            </form>
-                        </li>
-                    </ul>
                 </li>
             </ul>
         </div>
+
+
+        <!-- Right-Aligned Username + Avatar with Dropdown -->
+        <div class="dropdown d-flex align-items-center gap-3">
+
+            <!-- Username -->
+            <span class="fw-semibold text-dark">
+                {{ Auth::user()->firstname }}
+            </span>
+
+            <!-- Vertical Divider -->
+            <div style="border-left: 1px solid #ccc; height: 24px;"></div>
+
+            <!-- Avatar (Dropdown Toggle) -->
+            <a href="#" class="d-flex align-items-center text-decoration-none" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="{{ asset('images/user-avatar.png') }}" alt="{{ __('user_avatar_alt') }}" class="rounded-circle" style="width: 36px; height: 36px;">
+            </a>
+
+            <!-- Dropdown Menu -->
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                <li>
+                    <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                        <i class="bi bi-person me-2"></i> {{ __('messages.profile') }}
+                    </a>
+                </li>
+                <li>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="dropdown-item">
+                            <i class="bi bi-box-arrow-right me-2"></i> {{ __('messages.logout') }}
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+
     </div>
 </nav>
